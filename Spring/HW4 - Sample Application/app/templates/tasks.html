@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tasks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="d-flex justify-content-between my-3">
+        <h1>Tasks</h1>
+        <div>
+          <a href="{{ url_for('analysis') }}" class="btn btn-primary">Analysis</a>
+          <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+      </div>
+      <hr>
+      <form action="{{ url_for('tasks') }}" method="post" name="new_task">
+        <div class="form-group"><label for="title">Title:</label><input type="text" class="form-control" id="title" name="title" placeholder="Enter task title"></div>
+        <div class="form-group"><label for="description">Description:</label><textarea class="form-control" id="description" name="description" placeholder="Enter task description" rows="3"></textarea></div>
+        <div class="form-group"><label for="deadline">Deadline:</label><input type="datetime-local" class="form-control" id="deadline" name="deadline" required></div>
+        <div class="form-group"><label for="task_type">Task Type:</label><select class="form-control" id="task_type" name="task_type">
+            <option value="Health">Health</option>
+            <option value="Job">Job</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Family">Family</option>
+            <option value="Hobbies">Hobbies</option>
+          </select></div><button type="submit" class="btn btn-primary" name="add_task">Add Task</button>
+      </form>
+      <hr>
+      <h2>Upcoming Tasks</h2>
+      <ul class="list-group"> {% for task in tasks %} 
+        <li class="list-group-item">
+          <strong>Title:</strong> {{ task.title }}<br>
+          <strong>Description:</strong> {{ task.description }}<br>
+          <strong>Deadline:</strong> {{ task.deadline }}<br>
+          <strong>Task Type:</strong> {{ task.task_type }}<br>
+          <strong>Creation Time:</strong> {{ task.creation_time }}<br>
+          <strong>Status:</strong> {{ task.status }}<br>
+          <form action="{{ url_for('tasks') }}" method="post" class="pull-right">
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <button type="submit" class="btn btn-danger btn-xs" name="delete_task">Delete</button>
+            <button type="button" class="btn btn-warning btn-xs edit-button" data-bs-toggle="modal" data-bs-target="#editTaskModal" data-id="{{ task.id }}" data-title="{{ task.title }}" data-description="{{ task.description }}" data-deadline="{{ task.deadline }}" data-task_type="{{ task.task_type }}">Edit</button>
+            <button type="submit" class="btn btn-success btn-xs" name="mark_done">Mark as Done</button>
+          </form>
+        </li>
+      {% endfor %} </ul>
+      <hr>
+      <h2>Completed Tasks</h2>
+      <ul class="list-group"> {% for task in completed_tasks %} 
+        <li class="list-group-item">
+          <strong>Title:</strong> {{ task.title }}<br>
+          <strong>Description:</strong> {{ task.description }}<br>
+          <strong>Deadline:</strong> {{ task.deadline }}<br>
+          <strong>Task Type:</strong> {{ task.task_type }}<br>
+          <strong>Creation Time:</strong> {{ task.creation_time }}<br>
+          <strong>Done Time:</strong> {{ task.done_time }}<br>
+          <strong>Status:</strong> {{ task.status }}<br>
+          <form action="{{ url_for('tasks') }}" method="post" class="pull-right">
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <button type="submit" class="btn btn-danger btn-xs" name="delete_task">Delete</button>
+            <button type="button" class="btn btn-warning btn-xs edit-button" data-bs-toggle="modal" data-bs-target="#editTaskModal" data-id="{{ task.id }}" data-title="{{ task.title }}" data-description="{{ task.description }}" data-deadline="{{ task.deadline }}" data-task_type="{{ task.task_type }}">Edit</button>
+          </form>
+        </li>
+      {% endfor %} </ul>
+    </div>
+    <!-- Edit Task Modal -->
+    <div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="{{ url_for('tasks') }}" method="post">
+            <div class="modal-body">
+              <input type="hidden" name="task_id" id="edit_task_id">
+              <div class="form-group">
+                <label for="edit_title">Title:</label>
+                <input type="text" class="form-control" id="edit_title" name="title" placeholder="Enter task title">
+              </div>
+              <div class="form-group">
+                <label for="edit_description">Description:</label>
+                <textarea class="form-control" id="edit_description" name="description" placeholder="Enter task description" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="edit_deadline">Deadline:</label>
+                <input type="datetime-local" class="form-control" id="edit_deadline" name="deadline" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_task_type">Task Type:</label>
+                <select class="form-control" id="edit_task_type" name="task_type">
+                  <option value="Health">Health</option>
+                  <option value="Job">Job</option>
+                  <option value="Lifestyle">Lifestyle</option>
+                  <option value="Family">Family</option>
+                  <option value="Hobbies">Hobbies</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" name="edit_task">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function() {
+        $('.edit-button').on('click', function() {
+          const taskId = $(this).data('id');
+          const taskTitle = $(this).data('title');
+          const taskDescription = $(this).data('description');
+          const taskDeadline = $(this).data('deadline');
+          const taskType = $(this).data('task_type');
+          $('#edit_task_id').val(taskId);
+          $('#edit_title').val(taskTitle);
+          $('#edit_description').val(taskDescription);
+          $('#edit_deadline').val(taskDeadline);
+          $('#edit_task_type').val(taskType);
+        });
+      });
+      // Convert taskDeadline to local datetime format
+      function convertToDatetimeLocal(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+      // Add event listener to update the modal form when an 'Edit' button is clicked
+      $('.edit-button').on('click', function() {
+        const taskId = $(this).data('id');
+        const taskTitle = $(this).data('title');
+        const taskDescription = $(this).data('description');
+        const taskDeadline = convertToDatetimeLocal($(this).data('deadline'));
+        const taskType = $(this).data('task_type');
+        $('#edit_task_id').val(taskId);
+        $('#edit_title').val(taskTitle);
+        $('#edit_description').val(taskDescription);
+        $('#edit_deadline').val(taskDeadline);
+        $('#edit_task_type').val(taskType);
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
