@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Register</h1>
+	<form action="{{ url_for('register') }}" method="post">
+	    {% if message is defined and message %}
+		<div class="alert alert-warning">{{ message }}</div>
+	    {% endif %}
+	    <div class="mb-3">
+		<label for="sid" class="form-label">Student ID:</label>
+		<input type="text" class="form-control" id="sid" name="sid" placeholder="Enter Student ID">
+	    </div>
+	    <div class="mb-3">
+		<label for="sname" class="form-label">Name:</label>
+		<input type="text" class="form-control" id="sname" name="sname" placeholder="Enter name">
+	    </div>
+	    <div class="mb-3">
+		<label for="bdate" class="form-label">Birth Date:</label>
+		<input type="date" class="form-control" id="bdate" name="bdate">
+	    </div>
+	    <div class="mb-3">
+		<label for="dept" class="form-label">Department:</label>
+		<input type="text" class="form-control" id="dept" name="dept" placeholder="Enter department">
+	    </div>
+	    <div class="mb-3">
+		<label for="year" class="form-label">Year:</label>
+		<input type="text" class="form-control" id="year" name="year" placeholder="Enter year">
+	    </div>
+	    <div class="mb-3">
+		<label for="gpa" class="form-label">GPA:</label>
+		<input type="number" step="0.01" class="form-control" id="gpa" name="gpa" placeholder="Enter GPA">
+	    </div>
+
+	    <button type="submit" class="btn btn-primary">Register</button>
+	</form>
+
+        <div class="mt-4">
+            <form action="{{ url_for('login') }}" method="get">
+                <button class="btn btn-secondary">Login</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

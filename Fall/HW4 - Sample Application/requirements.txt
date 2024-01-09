@@ -1,0 +1,4 @@
+Flask==2.2.2
+mysqlclient
+flask_mysqldb
+Werkzeug==2.2.2
