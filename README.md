@@ -15,3 +15,7 @@ All my work in CS 353 - Database Systems course.
 - [x] (HW 4) Programming Assignment - Simple Internship Application App - 100 / 100
 - [x] (HW 5) Functional Dependencies and Normalization - 75 / 100
 - [x] (HW 6) B+ Tree and Extendible Hash Structure - 80 / 100
+
+#### Additional Resources for HW 6:
+B+ Tree: https://goneill.co.nz/btree-demo.php
+Extendible Hash Structure: https://devimam.github.io/exhash/
